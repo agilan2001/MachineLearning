@@ -196,12 +196,12 @@ dtst.style.display='none';
 
 function view(){
 boy_td.innerHTML="";
-boy_th.innerHTML+=" ("+boy.length+")";
+boy_th.innerHTML="BOYS ("+boy.length+")";
 for (var p=0;p<boy.length;p++)
 boy_td.innerHTML+= boy[p]+ ((p==boy.length-1) ? "" : ", ");
 
 gir_td.innerHTML="";
-gir_th.innerHTML+=" ("+gir.length+")";
+gir_th.innerHTML="GIRLS ("+gir.length+")";
 for (var p=0;p<gir.length;p++)
 gir_td.innerHTML+= gir[p]+ ((p==gir.length-1) ? "" : ", ");
 dtst.style.display='block';
