@@ -1,0 +1,207 @@
+<html>
+<style>
+body{
+	background-color:black;
+	color:white;
+	text-align:center;
+	font-size:45px;
+}
+#hd1{
+	font-size:60px;
+	font-weight:bold;
+	color:red;
+}
+#hd2{
+	font-size:50px;
+	color:red;
+}
+#nm{
+	font-size:40px;
+	background-color:lightblue;
+	border-radius:15px;
+	padding:2px;
+	text-align:center;
+}
+#pred_btn, #ys_btn, #no_btn,#view_btn,#agn_btn{
+	font-size:40px;
+	border-radius:20px;
+	padding:15px;
+	width:350px;
+	background-color:lightgreen;
+	font-weight:bold;
+}
+#unrs, #srrs{
+	color:red;
+}
+#tbl{
+	border-collapse:collapse;
+	width:100%;
+	
+}
+td,th{
+	border:5px solid red;
+	font-size:25px;
+	padding:4px;
+}
+th{
+	background-color:red;
+}
+</style>
+<body>
+<span id="hd1">Supervised Machine Learning</span>
+<br><span id="hd2">[ Boy/Girl Predictor ]</span>
+<br><br>Enter a name : <input type = "text" id="nm" />
+<br><br>
+<button id="pred_btn" onClick="pred();">PREDICT</button>
+<span id="ld" style="display:none;">Predicting...</span>
+<span id="sr" style="display:none;">
+<br><br>I found the name in my DATASET
+<br><br>I am sure that is a <span id ="srrs"></span>
+</span>
+<span id="un" style="display:none;">
+<br><br>I cannot find the name in my DATASET
+<br>I predict that was a <span id ="unrs"></span>
+<br><br>Am I Right? <br><button id="ys_btn" onClick="res(1);">YES</button> <button id="no_btn" onClick="res(0);">NO</button>
+</span>
+<span id="tn" style="display:none;">
+<br><br>Thank You for TRAINING ME.
+<br>You improved my DATASET
+</span>
+<span id ="fin" style="display:none">
+<br><button id="view_btn" onClick="view();">View DATASET</button><br>
+<span id="dtst" style="display:none;">
+<br><table id="tbl">
+<tr>
+<th id="boy_th">BOYS</th></tr>
+<tr><td id="boy_td"></td>
+</tr>
+<tr>
+<th id="gir_th">GIRLS</th></tr>
+<tr><td id="gir_td"></td>
+</tr>
+</table>
+</span>
+<br><button id="agn_btn" onClick="again();">TEST AGAIN</button>
+</span>
+<script>
+var boy=[], gir=[];
+var pd;
+var name;
+
+function upld(){
+var file = new File([boy.join(";")+"#"+gir.join(";")], "t.txt", {
+  type: "text/plain",
+});
+
+var Token =atob("QTN5cFprVHVfX0FBQUFBQUFBQUFZN2lGd3hFakVlZ1pfT1FqeU9XSTFpaWx3dGJVaThjcGhPOU51M1lfeGNWWQ==");
+var xhr = new XMLHttpRequest();
+  
+xhr.open('POST', 'https://content.dropboxapi.com/2/files/upload');
+xhr.setRequestHeader('Authorization', 'Bearer ' + Token);
+xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+xhr.setRequestHeader('Dropbox-API-Arg', JSON.stringify({
+  path: '/uploads/machine_learning.txt',
+  mode: 'overwrite',
+  autorename: false,
+  mute: false
+})); 
+xhr.send(file);
+}
+
+function dwld(){
+
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://dl.dropbox.com/s/5oyi8aq7c4x0drk/machine_learning.txt?r='+Math.floor(Math.random() * 101),true);
+xhr.onload = function (e) { 
+if (xhr.readyState == 4 && xhr.status == 200) { 
+var dt=xhr.responseText.split("#");
+boy=dt[0].split(';');
+gir=dt[1].split(';'); 
+ld.style.display='none';
+evlt();
+}
+} 
+xhr.send();
+}
+
+function pred(){
+pred_btn.disabled=true;
+ld.style.display='block';
+dwld();
+}
+
+function evlt(){
+name=document.getElementById("nm").value.toUpperCase();
+for(var q=0;q<boy.length;q++){
+if (boy[q]==name){
+sr.style.display='block';
+srrs.innerHTML="BOY🙋‍♂️";
+fin.style.display='block';
+return;
+}
+}
+
+for(var q=0;q<gir.length;q++){
+if (gir[q]==name){
+sr.style.display='block';
+srrs.innerHTML="GIRL🙋‍♀️";
+fin.style.display='block';
+return;
+}
+}
+
+un.style.display='block';
+if(Math.random()>0.5){
+pd=0;
+unrs.innerHTML="BOY🙋‍♂️";
+}else{
+pd=1;
+unrs.innerHTML="GIRL🙋‍♀️";
+}
+}
+
+function res(val){
+if(val==0){
+if(pd==0){
+gir.push(name);
+}else{
+boy.push(name);
+}
+}else{
+if(pd==0){
+boy.push(name);
+}else{
+gir.push(name);
+}
+}
+upld();
+tn.style.display='block';
+fin.style.display='block';
+}
+
+function again(){
+nm.value="";
+pred_btn.disabled=false;
+fin.style.display='none';
+un.style.display='none';
+tn.style.display='none';
+sr.style.display='none';
+dtst.style.display='none';
+
+}
+
+function view(){
+boy_td.innerHTML="";
+boy_th.innerHTML+=" ("+boy.length+")";
+for (var p=0;p<boy.length;p++)
+boy_td.innerHTML+= boy[p]+ ((p==boy.length-1) ? "" : ", ");
+
+gir_td.innerHTML="";
+gir_th.innerHTML+=" ("+gir.length+")";
+for (var p=0;p<gir.length;p++)
+gir_td.innerHTML+= gir[p]+ ((p==gir.length-1) ? "" : ", ");
+dtst.style.display='block';
+}
+
+</script>
+</html>
